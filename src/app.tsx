@@ -71,20 +71,20 @@ function App() {
               name="email"
               type="email"
               placeholder="Email"
-              className="flex flex-col col-span-2"
+              className="flex flex-col md:col-span-2"
             />
             <Input
               name="telephone"
               type="tel"
               placeholder="Telephone"
-              className="flex flex-col col-span-2"
+              className="flex flex-col md:col-span-2"
             />
-            <Textarea name="bio" placeholder="Bio" className="flex flex-col col-span-2" />
+            <Textarea name="bio" placeholder="Bio" className="flex flex-col md:col-span-2" />
             <Input
               name="date"
               type="date"
               placeholder="Birthday"
-              className="flex flex-col col-span-2"
+              className="flex flex-col md:col-span-2"
             />
             <Select
               name="team"

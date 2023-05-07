@@ -7,7 +7,7 @@ interface FieldsetProps extends React.HTMLProps<HTMLFieldSetElement> {
 
 function Fieldset({ columns = 1, legend, children }: FieldsetProps) {
   return (
-    <fieldset className={`grid grid-cols-${columns} gap-4 mt-4 mb-4 p-4 border-2`}>
+    <fieldset className={`grid grid-cols-1 sm:grid-cols-${columns} gap-4 mt-4 mb-4 p-4 border-2`}>
       <legend className="text-lg font-semibold pl-2 pr-2">{legend}</legend>
       {children}
     </fieldset>
