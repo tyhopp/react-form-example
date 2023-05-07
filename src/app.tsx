@@ -120,7 +120,7 @@ function App() {
             </button>
             <button
               type="submit"
-              className="text-white bg-blue-500 hover:bg-blue-600 active:bg-blue-700 pt-2 pb-2 pl-6 pr-6 mt-4"
+              className="text-white bg-blue-700 hover:bg-blue-800 active:bg-blue-900 pt-2 pb-2 pl-6 pr-6 mt-4"
             >
               Submit
             </button>
