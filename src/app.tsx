@@ -53,7 +53,7 @@ function App() {
   return (
     <main className="flex flex-col justify-center items-center w-vw h-vh p-4">
       <section className="max-w-2xl">
-        <h1 className="text-3xl font-bold">React Form</h1>
+        <h1 className="text-3xl font-bold">React Form Example</h1>
         <p className="mt-2 mb-8">An example form built with React and Tailwind.</p>
         <Progress value={finishedInputs.size} className="mt-4 mb-2" />
 
