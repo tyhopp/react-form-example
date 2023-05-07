@@ -1,60 +1,52 @@
-import React from "react"
+import React from 'react';
+import Progress from './components/progress.tsx';
+import Fieldset from './components/fieldset.tsx';
+import Input from './components/input.tsx';
+import Textarea from './components/textarea.tsx';
+import Select from './components/select.tsx';
 
 function App() {
-  const formRef = React.useRef<HTMLFormElement>(null)
-  const submittedFormDataRef = React.useRef<HTMLDivElement>(null)
+  const formRef = React.useRef<HTMLFormElement>(null);
+  const submittedFormDataRef = React.useRef<HTMLDivElement>(null);
 
-  const [inputCount, setInputCount] = React.useState<number>(0)
-  const [finishedInputs, setFinishedInputs] = React.useState<Set<string>>(new Set())
-  const [formData, setFormData] = React.useState<FormData | null>(null)
-
-  React.useEffect(() => {
-    if (!formRef.current) {
-      return
-    }
-
-    const inputs = formRef.current.querySelectorAll("input[required],textarea[required],select[required]")
-    
-    if (inputs.length) {
-      setInputCount(inputs.length)
-    }
-  }, [])
+  const [finishedInputs, setFinishedInputs] = React.useState<Set<string>>(new Set());
+  const [formData, setFormData] = React.useState<FormData | null>(null);
 
   function onClear() {
-    formRef.current?.reset()
-    setFormData(null)
-    setFinishedInputs(new Set())
+    formRef.current?.reset();
+    setFormData(null);
+    setFinishedInputs(new Set());
   }
 
   function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
+    event.preventDefault();
 
-    setFormData(new FormData(formRef.current as HTMLFormElement))
+    setFormData(new FormData(formRef.current as HTMLFormElement));
 
     setTimeout(() => {
       if (submittedFormDataRef.current) {
-      submittedFormDataRef.current.scrollIntoView()
+        submittedFormDataRef.current.scrollIntoView();
       }
-    }, 0)
+    }, 0);
   }
 
   function onChange(event: React.FormEvent<HTMLFormElement>) {
-    const target = event.target as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    const target = event.target as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
 
     if (!target.required) {
-      return
+      return;
     }
 
     if (target.value && !finishedInputs.has(target.name)) {
-      setFinishedInputs((ids) => new Set(ids).add(target.name))
+      setFinishedInputs((ids) => new Set(ids).add(target.name));
     }
 
     if (!target.value && finishedInputs.has(target.name)) {
       setFinishedInputs((ids) => {
-        const newIds = new Set(ids)
-        newIds.delete(target.name)
-        return newIds
-      })
+        const newIds = new Set(ids);
+        newIds.delete(target.name);
+        return newIds;
+      });
     }
   }
 
@@ -62,55 +54,76 @@ function App() {
     <main className="flex flex-col justify-center items-center w-vw h-vh p-4">
       <section className="max-w-2xl">
         <h1 className="text-3xl font-bold">React Form</h1>
-
         <p className="mt-2 mb-8">An example form built with React and Tailwind.</p>
+        <Progress value={finishedInputs.size} className="mt-4 mb-2" />
 
-        <div className="mt-4 mb-2">
-          <p>Completion %</p>
-          <progress value={finishedInputs.size} max={inputCount} className="w-full [&::-webkit-progress-bar]:bg-transparent [&::-webkit-progress-value]:bg-blue-500 border-2" />
-        </div>
+        <form
+          ref={formRef}
+          name="profile"
+          className="flex flex-col max-w-2xl"
+          onChange={onChange}
+          onSubmit={onSubmit}
+        >
+          <Fieldset columns={2} legend="Profile">
+            <Input name="first-name" type="text" required placeholder="First Name" />
+            <Input name="second-name" type="text" required placeholder="Last Name" />
+            <Input
+              name="email"
+              type="email"
+              placeholder="Email"
+              className="flex flex-col col-span-2"
+            />
+            <Input
+              name="telephone"
+              type="tel"
+              placeholder="Telephone"
+              className="flex flex-col col-span-2"
+            />
+            <Textarea name="bio" placeholder="Bio" className="flex flex-col col-span-2" />
+            <Input
+              name="date"
+              type="date"
+              placeholder="Birthday"
+              className="flex flex-col col-span-2"
+            />
+            <Select
+              name="team"
+              label="Team"
+              options={[
+                { value: 'team-1', label: 'Team 1' },
+                { value: 'team-2', label: 'Team 2' }
+              ]}
+            />
+            <Select
+              name="color"
+              label="Color"
+              options={[
+                { value: 'red', label: 'Red' },
+                { value: 'blue', label: 'Blue' }
+              ]}
+            />
+          </Fieldset>
 
-        <form ref={formRef} name="profile" className="flex flex-col max-w-2xl" onChange={onChange} onSubmit={onSubmit}>
-          <fieldset className="grid grid-cols-2 gap-4 mt-4 mb-4 p-4 border-2">
-            <legend className="text-lg font-semibold pl-2 pr-2">Profile</legend>
-            <input name="first-name" type="text" required placeholder="First Name" />
-            <input name="second-name" type="text" required placeholder="Last Name" />
-            <input name="email" type="email" placeholder="Email" className="col-span-2" />
-            <input name="telephone" type="tel" placeholder="Telephone" className="col-span-2" />
-            <textarea name="bio" placeholder="Bio" className="col-span-2" />
-            <label className="flex flex-col col-span-2">
-              <span className="pb-1">Birthday</span>
-              <input name="date" type="date" placeholder="Birthday" />
-            </label>
-            <label className="flex flex-col">
-              <span className="pb-1">Team</span>
-              <select name="team">
-                <option value="team-1">Team 1</option>
-                <option value="team-2">Team 2</option>
-              </select>
-            </label>
-            <label className="flex flex-col">
-              <span className="pb-1">Color</span>
-              <select name="color">
-                <option value="red">Red</option>
-                <option value="blue">Blue</option>
-              </select>
-            </label>
-          </fieldset>
-
-          <fieldset className="grid grid-cols-1 gap-4 mt-4 mb-4 p-4 border-2">
-            <legend className="text-lg font-semibold pl-2 pr-2">Pet</legend>
-            <input name="pet-name" type="text" required placeholder="Name" />
-            <textarea name="pet-bio" placeholder="Bio" />
-            <label className="flex flex-col">
-              <span className="pb-1">Birthday</span>
-              <input name="pet-date" type="date" placeholder="Birthday" />
-            </label>
-          </fieldset>
+          <Fieldset legend="Pet">
+            <Input name="pet-name" type="text" required placeholder="Name" />
+            <Textarea name="pet-bio" placeholder="Bio" />
+            <Input name="pet-date" type="date" placeholder="Birthday" />
+          </Fieldset>
 
           <div className="self-end">
-            <button type="button" onClick={onClear} className="pt-2 pb-2 pl-6 pr-6 mt-4 mr-4 border-2 hover:border-slate-300 active:border-slate-400">Clear</button>
-            <button type="submit" className="text-white bg-blue-500 hover:bg-blue-600 active:bg-blue-700 pt-2 pb-2 pl-6 pr-6 mt-4">Submit</button>
+            <button
+              type="button"
+              onClick={onClear}
+              className="pt-2 pb-2 pl-6 pr-6 mt-4 mr-4 border-2 hover:border-slate-300 active:border-slate-400"
+            >
+              Clear
+            </button>
+            <button
+              type="submit"
+              className="text-white bg-blue-500 hover:bg-blue-600 active:bg-blue-700 pt-2 pb-2 pl-6 pr-6 mt-4"
+            >
+              Submit
+            </button>
           </div>
         </form>
 
@@ -124,7 +137,7 @@ function App() {
         )}
       </section>
     </main>
-  )
+  );
 }
 
-export default App
+export default App;
