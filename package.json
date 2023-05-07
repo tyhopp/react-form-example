@@ -1,5 +1,5 @@
 {
-  "name": "react-form",
+  "name": "react-form-example",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "firebase deploy --project react-form-example --only hosting"
   },
   "dependencies": {
     "react": "^18.2.0",
